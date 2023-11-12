@@ -104,6 +104,11 @@ public class View extends javax.swing.JPanel {
 
         editButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         editButton.setText("EDIT");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
 
         deleteButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         deleteButton.setText("DELETE");
@@ -191,6 +196,37 @@ public class View extends javax.swing.JPanel {
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         // TODO add your handling code here:
+         int selectedIndex = detailsTable.getSelectedRow(); 
+        if(selectedIndex == -1){
+            JOptionPane.showMessageDialog(this, "Please select a user to edit", "Cannot edit user", JOptionPane.ERROR_MESSAGE);
+        }else {
+            User selectedUser = users.get(selectedIndex);
+            String name = nameTextField.getText();            
+            String age = ageTextField.getText();
+            int ageInt; 
+
+            if(name.length() == 0){
+                JOptionPane.showMessageDialog(this, "Name cannot be empty", "Cannot edit user", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if(age.length() == 0){
+                JOptionPane.showMessageDialog(this, "Age cannot be empty", "Cannot edit user", JOptionPane.ERROR_MESSAGE);
+                return;
+
+            }
+            try {
+               ageInt = Integer.parseInt(age);
+               User newUser = new User(); 
+               newUser.setAge(ageInt);
+               newUser.setName(name);
+               DatabaseConnector.editUser(selectedUser, newUser);
+               clearFields();
+               populateTable(); 
+               JOptionPane.showMessageDialog(this, "Edited Successfully", "Edited Successfully", JOptionPane.INFORMATION_MESSAGE);
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(this, "Enter Correct Age", "User Cannot be Edited", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -207,6 +243,21 @@ public class View extends javax.swing.JPanel {
         }
    
     }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        // TODO add your handling code here:
+        int selectedIndex = detailsTable.getSelectedRow(); 
+        if(selectedIndex == -1){
+            JOptionPane.showMessageDialog(this, "Please select a user to edit", "Cannot edit user", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            User selectedUser = users.get(selectedIndex);
+            nameTextField.setText(selectedUser.getName());            
+            ageTextField.setText(Integer.toString(selectedUser.getAge()));
+        }
+    
+        
+    }//GEN-LAST:event_editButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
