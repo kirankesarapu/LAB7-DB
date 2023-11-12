@@ -31,7 +31,7 @@ public class DatabaseConnector {
      */
     public static void addUser(User user) {
         //add to database
-        String query = "INSERT INTO USER(NAME,AGE) VALUES(?,?)";
+        String query = "INSERT INTO test.user(NAME,AGE) VALUES(?,?)";
         try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, user.getName());
@@ -39,7 +39,7 @@ public class DatabaseConnector {
             int rows = stmt.executeUpdate();
             System.out.println("Rows impacted : " + rows);
 //            conn.close();
-        } catch (SQLException e) {
+    } catch (SQLException e) {
             e.printStackTrace();
         }
     }
