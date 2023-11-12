@@ -5,6 +5,7 @@
 package ui;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.User;
 import util.DatabaseConnector;
@@ -33,10 +34,15 @@ public class View extends javax.swing.JPanel {
                 row[1] = u.getName();
                 row[2] = u.getAge(); 
                 model.addRow(row);
-            }            
+            } 
+            clearFields();
         }catch (Exception e){
             
         }
+    }
+    public void clearFields(){
+        nameTextField.setText("");
+        ageTextField.setText("");
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -101,6 +107,11 @@ public class View extends javax.swing.JPanel {
 
         deleteButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         deleteButton.setText("DELETE");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         nameLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         nameLabel.setText("Name :");
@@ -181,6 +192,21 @@ public class View extends javax.swing.JPanel {
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_submitButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+        int selectedIndex = detailsTable.getSelectedRow();
+        if(selectedIndex == -1){
+            JOptionPane.showMessageDialog(this,"Select a User to Delete","User cannot be deleted", JOptionPane.ERROR_MESSAGE);
+        }else{
+            User selectedUser = users.get(selectedIndex);
+            DatabaseConnector.deleteUser(selectedUser);
+            JOptionPane.showMessageDialog(this,"User is deleted ", "Deleted Successfully",JOptionPane.INFORMATION_MESSAGE);
+            populateTable();
+            clearFields();
+        }
+   
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

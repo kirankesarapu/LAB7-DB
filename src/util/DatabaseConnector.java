@@ -14,7 +14,7 @@ import model.User;
  */
 public class DatabaseConnector {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/test?useSSL=false";
+    private static final String URL = "jdbc:mysql://localhost:3306/test?allowPublicKeyRetrieval=true&useSSL=false";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "8888";
 
@@ -79,7 +79,7 @@ public class DatabaseConnector {
      * 
      */
     public static void deleteUser(User u) {
-        String query = "delete from USER where id = ?";
+        String query = "delete from test.user where id = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -96,7 +96,7 @@ public class DatabaseConnector {
      * @param newUser modified user details to be added
      */
     public static void editUser(User oldUser, User newUser) {
-        String query = "UPDATE USER SET name=?, age=? WHERE id=?";
+        String query = "UPDATE test.user SET name=?, age=? WHERE id=?";
 
         try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             PreparedStatement stmt = conn.prepareStatement(query);
